@@ -51,17 +51,10 @@ handleGenreSelect = genre => {
   this.setState({selectedGenre: genre, currentPage: 1})
 }
 
-handleSort = path => {
-  const sortColumn = {...this.state.sortColumn};
-  if (sortColumn.path === path) sortColumn.order = (sortColumn.order === 'asc') ? 'desc' : 'asc';
-else {
-  sortColumn.path = path;
-  sortColumn.order = 'asc';
+handleSort = sortColumn => {
+this.setState({ sortColumn });
 }
 
-  this.setState({sortColumn});
-  console.log(path);
-};
 
 render() {
   const { length: count } = this.state.movies;
@@ -76,7 +69,7 @@ render() {
     <div className="row">
       <div className="col-3"><ListGroup items={this.state.genres} selectedItem={this.state.selectedGenre} onItemSelect={this.handleGenreSelect}/></div>
       <div className="col">
-  <MoviesTable movies={movies} onLike={this.handleLike} onDelete={this.handleDelete} onSort={this.handleSort}/>
+  <MoviesTable movies={movies} sortColumn={sortColumn} onLike={this.handleLike} onDelete={this.handleDelete} onSort={this.handleSort}/>
   <Nav itemsCount={filtered.length} pageSize={pageSize} currentPage= {currentPage} onPageChange={this.handlePageChange} /></div>
 
   </div>
