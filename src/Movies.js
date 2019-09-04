@@ -8,6 +8,7 @@ import { getGenres } from "./services/fakeGenreService";
 import _ from 'lodash';
 
 
+
 class Movies extends Component {
 state = {
 movies: [],
@@ -55,22 +56,30 @@ handleSort = sortColumn => {
 this.setState({ sortColumn });
 }
 
-
-render() {
-  const { length: count } = this.state.movies;
-  const { pageSize, currentPage, selectedGenre, movies: allMovies, sortColumn } = this.state;
-
+getPagedData = () => {
+    const { pageSize, currentPage, selectedGenre, movies: allMovies, sortColumn } = this.state;
   const filtered = selectedGenre && selectedGenre._id ? allMovies.filter(m=> m.genre._id === selectedGenre._id) : allMovies;
 
  const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
 
   const movies = paginate(sorted, currentPage, pageSize);
+
+  return {totalCount: filtered.length, data:movies}
+}
+
+render() {
+  const { length: count } = this.state.movies;
+  const { pageSize, currentPage, sortColumn } = this.state;
+
+const {totalCount, data: movies} = this.getPagedData();
+
   return (
     <div className="row">
       <div className="col-3"><ListGroup items={this.state.genres} selectedItem={this.state.selectedGenre} onItemSelect={this.handleGenreSelect}/></div>
       <div className="col">
+        <p> Showing {totalCount} movies in the database. </p>
   <MoviesTable movies={movies} sortColumn={sortColumn} onLike={this.handleLike} onDelete={this.handleDelete} onSort={this.handleSort}/>
-  <Nav itemsCount={filtered.length} pageSize={pageSize} currentPage= {currentPage} onPageChange={this.handlePageChange} /></div>
+  <Nav itemsCount={totalCount} pageSize={pageSize} currentPage= {currentPage} onPageChange={this.handlePageChange} /></div>
 
   </div>
     );
