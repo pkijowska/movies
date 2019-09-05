@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import MoviesTable from "./moviesTable";
 import { getMovies } from "./services/fakeMovieService";
-import Nav from './Nav';
+import Pagination from './Pagination';
 import { paginate } from './utils/paginate';
 import ListGroup from './listGroup'
 import { getGenres } from "./services/fakeGenreService";
 import _ from 'lodash';
+
+
 
 
 
@@ -74,13 +76,21 @@ render() {
 const {totalCount, data: movies} = this.getPagedData();
 
   return (
+    <div>
+
     <div className="row">
+
       <div className="col-3"><ListGroup items={this.state.genres} selectedItem={this.state.selectedGenre} onItemSelect={this.handleGenreSelect}/></div>
       <div className="col">
         <p> Showing {totalCount} movies in the database. </p>
-  <MoviesTable movies={movies} sortColumn={sortColumn} onLike={this.handleLike} onDelete={this.handleDelete} onSort={this.handleSort}/>
-  <Nav itemsCount={totalCount} pageSize={pageSize} currentPage= {currentPage} onPageChange={this.handlePageChange} /></div>
 
+  <MoviesTable movies={movies} sortColumn={sortColumn} onLike={this.handleLike} onDelete={this.handleDelete} onSort={this.handleSort}/>
+  <Pagination itemsCount={totalCount} pageSize={pageSize} currentPage= {currentPage} onPageChange={this.handlePageChange} />
+
+
+  </div>
+
+</div>
   </div>
     );
   }

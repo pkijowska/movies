@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import Like from './like';
 import Table from './table';
-
+import { Link } from 'react-router-dom';
 
 // const x = <Like> </Like>; //React Element like component is a js object and we can use it as value of prop. we can then add a prop to columns table
 
 class MoviesTable extends Component {
   columns = [
-    {path: 'title', label: 'Title'},
+    {path: 'title', label: 'Title',
+    content: movie => <Link to={`/movies/${movie._id}`}>{movie.title}</Link>},
     {path: 'genre.name', label: 'Genre'},
     {path: 'numberInStock', label: 'Stock'},
     {path: 'dailyRentalRate', label: 'Rate'},
